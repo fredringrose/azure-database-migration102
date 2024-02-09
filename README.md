@@ -62,11 +62,59 @@ This section outlines the process of migrating an on-premise database to Azure S
 - **Objective**: Confirm the success of the migration process.
 - **Action**: Conduct a thorough validation of the migrated database. This includes checking the schema, data, and configurations to ensure everything has been transferred correctly and functions as expected.
 
-## Conclusion
 
 Following these steps will lead to a successful migration of an on-premise database to Azure SQL Database. It is crucial to perform a detailed validation post-migration to guarantee the integrity and functionality of the database in its new cloud environment.
 
+https://colab.research.google.com/github/AI-Core/Content-Public/blob/main/Content/units/Cloud-and-DevOps/11.%20Azure%20Essentials/6.%20Azure%20SQL%20Database/Notebook.ipynb#scrollTo=LtP2qQx-xKJZ
 
+
+https://colab.research.google.com/github/AI-Core/Content-Public/blob/main/Content/units/Cloud-and-DevOps/11.%20Azure%20Essentials/9.%20Azure%20Data%20Studio%20and%20Database%20Migration/Notebook.ipynb
+
+
+## Section 3: Data Backup and Restore 
+
+Maintaining frequent and regular backups of your Azure SQL Database is essential for data security. This section discusses the significance of implementing a structured backup schedule to protect your organization's critical data effectively.
+
+### 3.1 Backup the On-Premise Database
+
+The first step was to create a complete backup of the production database located on the Windows Virtual Machine. This backup acts as a comprehensive duplicate of the database, serving as a precautionary measure against potential unexpected problems.
+
+1. **Initial Backup Creation**:
+   - The journey begins with the generation of a full backup of the production database on the Windows VM. This crucial step duplicates the database, establishing a safety net for unforeseen issues.
+
+2. **Local Backup Storage**:
+   - Upon successful backup creation, the file is stored in a predetermined local directory, ready for further actions.
+
+3. **Azure Blob Storage Configuration**:
+   - An Azure Blob Storage account is set up to act as a secure, online repository for our database backups. This step involves configuring the storage account and creating a Blob Storage container, for example, named `mycontainerfred`, which will house our backups.
+
+4. **Backup File Upload**:
+   - The backup file is then uploaded to the designated Blob Storage container, providing an additional layer of data protection with a remotely stored redundant copy.
+
+### 3.2 Restoration in Development Environment
+
+1. **Development Environment Preparation**:
+   - A new Windows VM is provisioned to mirror the development setup, equipped with SQL Server to facilitate database activities within a sandbox environment.
+
+2. **Database Restoration**:
+   - Leveraging SSMS, the database backup from Azure Blob Storage is restored onto this development VM, allowing for safe experimentation and innovation without affecting the production data.
+
+### 3.3 Automated Backups
+
+1. **Maintenance Plans Configuration in SSMS**:
+   - Within SSMS on the development VM, a Maintenance Plan is established to automate regular backups of the development database. This plan is initially created following the backup process and subsequently configured to meet our specific needs.
+
+2. **Scheduling Automated Backups**:
+   - The Maintenance Plan is scheduled for weekly execution, ensuring ongoing data protection. Automated backups were to scheduled to occur every week on Sunday at 12:00:00 AM. This was a suitable downtime to complete weekly backups due to the low activity of traffic and users of the database at this time and during the weekend. The setup involves selecting SQL Server Credentials for accessing the Azure Storage Account, specifying the Azure storage container (e.g., `mycontainerfred`), and adjusting the schedule via the "New Job Schedule" window in SSMS to fit our requirements.
+
+
+By meticulously following these steps, we have fortified our project's data management strategy, ensuring that our database remains secure, recoverable, and consistently backed up. The combination of Azure Blob Storage for backup storage and SSMS for automation showcases our commitment to leveraging cutting-edge technologies for optimal data protection and management.
+
+## Section 4: Disaster Recovery Simulation 
+
+
+
+### 4.1 Mimic Data Loss in Production Environment
 
 
 
