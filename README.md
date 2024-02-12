@@ -112,10 +112,65 @@ By meticulously following these steps, we have fortified our project's data mana
 
 ## Section 4: Disaster Recovery Simulation 
 
+Disaster recovery is essential for maintaining business continuity and safeguarding data against unforeseen incidents. Testing these procedures in a controlled environment is critical for validating the recovery strategies, enhancing plan effectiveness, reducing potential downtime, identifying improvement areas, and ensuring compliance with regulations.
 
+Azure SQL Database supports various methods for simulating data loss, enabling organizations to prepare for different scenarios:
+
+- Intentional Deletion of Data: Simulate loss by deleting data, such as records, tables, or data ranges.
+- Data Corruption: Introduce corruption by altering records or fields to test recovery processes.
+- Accidental Updates: Perform incorrect updates via direct manipulation or flawed scripts.
+- Service Outages: Mimic service interruptions or connectivity issues to evaluate disaster recovery readiness.
+- Simulated Regional Outages: For georeplicated setups, simulate outages in the primary region to assess failover to secondary regions.
+
+### Precautions for Data Loss Simulation
+
+When simulating data loss, it's crucial to minimize risk and avoid impacting live data:
+
+- Use Non-Production Environments: Conduct tests in non-production settings, though for this project, data was intentionally removed from the production database to simulate disaster scenarios due to its test nature and lack of active users.
+- Backup Before Testing: Ensure the database is backed up before testing to allow restoration to a known good state.
+- Inform Stakeholders: Keep relevant parties informed about the testing to maintain transparency.
+- Document the Process: Record testing steps and outcomes for future reference and analysis.
+
+Regular testing of disaster recovery procedures by simulating data loss in a controlled environment equips organizations to effectively respond to actual incidents, minimizing the impact on critical operations.
 
 ### 4.1 Mimic Data Loss in Production Environment
 
+To mimic data loss in the production database of AdventureWorks, first a query was run to view all the data in the 'Sales.Customer' table of the database. 
+
+1. **Identify Relevant Tables/Data**: Determine which tables contain
+```sql
+SELECT * 
+FROM Sales.Customer;
+```
+
+This query returns all customer information from the `Sales.Customer` table in Azure Data Studio. In total there are 19820 rows in the table, containing customer information such as account numbers.
+
+2. **Corrupting Data**: Modify or delete data directly within the database using a tool like Azure Data Studio
+To simulate a data loss scenario, you can delete this record using the following code snippet:
+```sql
+DELETE FROM SALES.Customer
+WHERE PersonID IS NULL;
+```
+> Note: Before proceeding with any deletion or modification operation, make sure you have a backup!
+
+This query execution removes 701 rows from the 'Sales.Customer' table. This serves as a considerable data loss for the production database AdventureWorks. 
+
+The data loss was verified by running the inital query again to  check if the deleted rows are present. The query now returns a table with 19119 entries, compared to 19820 after the first query before the data loss, confirming that the table is now missing 701 rows. 
+
+### 4.2 Restore Database from Azure SQL Database Backup
+
+After performing the simulation, the production database needs to be restored to its previous uncorrupted state from an Azure SQL Database backup. This backup was uploaded to the Azure SQL database earlier in the project. 
+
+To restore an Azure SQL Database, access the Azure portal and navigate to your database dashboard. Select the database, then click "Restore" on the top bar. In the "Restore database" window, a restore point before the data loss was selected — choose a point based on when the last known good data was present, like two hours before the incident if applicable. It's important to note that if the database is very active with lots of users, you would need to choose the closest point in time before data loss has occurred for minimal data loss. 
+
+Name the new database, appending "-restored" to distinguish it, then click "Review + create" followed by "Create" to initiate the restoration, which takes a few minutes. After deployment, find the new database in the Azure SQL Database resource list. Verify its restoration point by connecting through Azure Data Studio.
+
+The same intial query was run on the restored database to confirm its success. 
+```sql
+SELECT * 
+FROM Sales.Customer;
+```
+As  expected, the query returned the same result as the initial production database before the simulated data loss. Therefore the database restoration was successful. It is important to now delete the corrupted data loss and now the restored database acts as the production database. This is achieved by using the 'Delete Connection' option on the original database (e.g. my-database-fred) under the 'Servers' Object Explorer under 'Connections'.
 
 
 ## Conclusion
