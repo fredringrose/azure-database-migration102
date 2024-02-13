@@ -65,12 +65,6 @@ This section outlines the process of migrating an on-premise database to Azure S
 
 Following these steps will lead to a successful migration of an on-premise database to Azure SQL Database. It is crucial to perform a detailed validation post-migration to guarantee the integrity and functionality of the database in its new cloud environment.
 
-https://colab.research.google.com/github/AI-Core/Content-Public/blob/main/Content/units/Cloud-and-DevOps/11.%20Azure%20Essentials/6.%20Azure%20SQL%20Database/Notebook.ipynb#scrollTo=LtP2qQx-xKJZ
-
-
-https://colab.research.google.com/github/AI-Core/Content-Public/blob/main/Content/units/Cloud-and-DevOps/11.%20Azure%20Essentials/9.%20Azure%20Data%20Studio%20and%20Database%20Migration/Notebook.ipynb
-
-
 ## Section 3: Data Backup and Restore 
 
 Maintaining frequent and regular backups of your Azure SQL Database is essential for data security. This section discusses the significance of implementing a structured backup schedule to protect your organization's critical data effectively.
