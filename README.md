@@ -172,6 +172,68 @@ FROM Sales.Customer;
 ```
 As  expected, the query returned the same result as the initial production database before the simulated data loss. Therefore the database restoration was successful. It is important to now delete the corrupted data loss and now the restored database acts as the production database. This is achieved by using the 'Delete Connection' option on the original database (e.g. my-database-fred) under the 'Servers' Object Explorer under 'Connections'.
 
+## Section 5: Geo-Replication and Failover
+
+To enhance the disaster recovery strategy for my AdventureWorks database, I embarked on setting up geo-replication in Azure SQL Database. This process involves asynchronously replicating the primary database to a secondary region, providing a robust solution for data redundancy and high availability across different geographic locations.
+
+### 5.1 How Geo-Replication Works
+- **Primary Database**: The original database, 'AdventureWorks' in our case, serving the application with read and write capabilities.
+- **Secondary Database**: A read-only copy of the 'AdventureWorks' database situated in a different Azure region, synchronized asynchronously to minimize impact on the primary database.
+- **Data Replication**: Changes in the primary database are replicated to the secondary database asynchronously, using Azure's infrastructure.
+- **Automatic Failover**: Allows manual initiation of failover or relies on Azure's automatic failover to promote the secondary database to primary, reducing downtime.
+
+### 5.2 Implementing Geo-Replication
+
+1. **Primary Database Selection**:
+    - Navigated to the Azure portal and located the primary AdventureWorks database from the Azure SQL Database dashboard.
+
+2. **Initiating Geo-Replication**:
+    - Selected "Replicas" under "Data Management" in the database's menu and clicked on "Create replica" to start the setup.
+
+3. **Secondary Server Configuration**:
+    - Opted to create a new SQL Server (`my-replication-server`) in the East US region for the secondary database, using SQL authentication for login credentials.
+
+4. **Replication Process**:
+    - Reviewed the new server details and initiated the replication by clicking "Create", starting the data synchronization between primary and secondary databases.
+
+### 5.3 Post-Setup Verification
+
+Verified the replica type as 'Geo' in the Azure portal, with 'AdventureWorks-database-restored' correctly identified as the primary database, ensuring preparedness for regional disruptions. 
+
+### 5.4 Test Failover and Tailback
+
+After setting up geo-replication, you can test failover by initiating a manual planned failover and tailback  in the Azure portal. Failover is the process of switching the workload from the primary region to the secondary region in a georeplicated environment. Thus, a planned failover simulates real-world challenges where you might need to perform maintenance or planned downtime on the primary server. 
+
+Implemented a failover process for the AdventureWorks database to test the disaster recovery strategy within the Azure SQL Database environment, specifically focusing on switching the primary database role to the secondary server and vice versa.
+
+#### Initiating Failover Group Creation
+
+1. **Primary Database Server Selection**:
+    - Accessed the Azure portal and selected the SQL server associated with the primary database, `production-database-restored` located in the UK region, from the Azure SQL Database dashboard.
+
+2. **Failover Group Configuration**:
+    - Chose **Failover groups** under the **Data management** pane and selected **Add group** to create a new failover group.
+
+3. **Failover Group Setup**:
+    - Named the failover group and selected the secondary server (e.g., `my-replication-server`) for the **Server** field, leaving other settings at their defaults before clicking **Create**.
+
+#### Executing Planned Failover
+
+1. **Secondary Server Navigation**:
+    - Navigated to the Azure SQL Server where the replication database resides, in this case, `my-replication-server`.
+
+2. **Planned Failover Initiation**:
+    - Initiated a planned failover by selecting **Failover** from the task pane, confirming the operation despite warnings about changing the secondary database to the primary role.
+
+3. **Failover Completion and Verification**:
+    - Waited for the failover to complete and then verified the role swap between the two servers. Utilized the connection details from the now primary server in the secondary region to test and validate the database's functionality, ensuring it operated as expected post-failover.
+
+#### Failover Testing Insights
+
+To further assess the functionality of the geo-replicated server, a connection to the server was created on Azure Data Studio in order to execute queries on the AdventureWorks database. This step was crucial to confirm the availability of the server post-failover and to ensure that the data remained complete and accessible. Running these queries provided tangible evidence of the seamless continuation of database operations, highlighting the effectiveness of the geo-replication and failover setup in preserving data integrity and availability in the event of server crashes.
+
+Testing the failover process for the AdventureWorks database by creating a failover group, executing a planned failover, and verifying the operation's success provided invaluable insights into the disaster recovery environment's functionality. Regular testing of these procedures enhances the preparedness of the disaster recovery plan, reinforcing the organization's capability to manage unexpected incidents efficiently.
+
 
 ## Conclusion
 
