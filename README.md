@@ -23,6 +23,9 @@ Upon successful restoration, the database is available for use or further data r
 
 This document outlines the process of migrating an on-premise database to Azure SQL Database. This transition involves moving both the schema and data to Azure's cloud ecosystem, ensuring a seamless migration while maintaining data integrity and system functionality.
 
+Here is the UML diagraph of the architecture for this project:
+![UML Diagraph](images/UML_diagraph.png)
+
 ## Section 2: Migration Process
 
 This section outlines the process of migrating an on-premise database to Azure SQL Database. This transition involves moving both the schema and data to Azure's cloud ecosystem, ensuring a seamless migration while maintaining data integrity and system functionality.
