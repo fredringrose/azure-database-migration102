@@ -4,6 +4,9 @@
 
 This project involves the architecture and implementation of a cloud-based database system using Microsoft Azure. It demonstrates expertise in cloud engineering, focusing on establishing a production environment, migrating to Azure SQL Database, and addressing key aspects such as data backup, restoration, automated scheduling, disaster recovery, geo-replication, failover configuration, and security through Microsoft Entra ID integration.
 
+Here is the UML diagraph of the architecture for this project:
+![UML Diagraph](images/UML_diagraph.png)
+
 ## Objectives
 
 - **Establish a Production Environment**: Set up a Windows Virtual Machine (VM) on Microsoft Azure to replicate an on-premise Windows server functionality. This VM is crucial for creating a secure and dedicated data storage solution.
@@ -23,8 +26,6 @@ Upon successful restoration, the database is available for use or further data r
 
 This document outlines the process of migrating an on-premise database to Azure SQL Database. This transition involves moving both the schema and data to Azure's cloud ecosystem, ensuring a seamless migration while maintaining data integrity and system functionality.
 
-Here is the UML diagraph of the architecture for this project:
-![UML Diagraph](images/UML_diagraph.png)
 
 ## Section 2: Migration Process
 
